@@ -108,18 +108,15 @@ class PassageTemplateTagTestCase(unittest.TestCase):
 
     def test_too_many_args(self):
         template = '{% load passage %}{% passage "gen 1:1" audio off maybe %}'
-        t = Template(template)
-        self.assertRaises(TemplateSyntaxError, t.render)
+        self.assertRaises(TemplateSyntaxError, Template, template)
 
     def test_wrong_args(self):
         template = '{% load passage %}{% passage "gen 1:1" off on %}'
-        t = Template(template)
-        self.assertRaises(TemplateSyntaxError, t.render)
+        self.assertRaises(TemplateSyntaxError, Template, template)
 
     def test_wrong_values(self):
         template = '{% load passage %}{% passage "gen 1:1" audio maybe %}'
-        t = Template(template)
-        self.assertRaises(TemplateSyntaxError, t.render)
+        self.assertRaises(TemplateSyntaxError, Template, template)
 
 
 if __name__ == '__main__':
