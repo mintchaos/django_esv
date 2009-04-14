@@ -1,5 +1,6 @@
 import urllib
 import httplib2
+from django.conf import settings
 
 class EsvClientError(Exception):
     pass
@@ -13,7 +14,8 @@ class EsvQuotaExceededError(EsvClientError):
 
 class EsvClient(object):
     def __init__(self, key='IP'):
-        self.http = httplib2.Http(".cache")
+        http_cache = getattr(settings, 'ESV_HTTP_CACHE', '/tmp/esv_http_cache')
+        self.http = httplib2.Http(http_cache)
         self.key = key
         self._cache = {}
     
@@ -28,9 +30,7 @@ class EsvClient(object):
             'audio-format': audio_format,
         }
         params = urllib.urlencode(params_dict).lower()
-        cached = self._cache.get(params, None)
-        if cached:
-            return cached
+        # TODO: Check cache here
         resp, content = self.http.request("http://www.esvapi.org/v2/rest/passageQuery?key=%s&%s" % (self.key, params), "GET")
         if content.startswith("ERROR"):
             if content.lower().find('no results found') > 0:
@@ -38,7 +38,7 @@ class EsvClient(object):
             if content.lower().find('you have exceeded your quota') > 0:
                 raise EsvQuotaExceededError
             raise EsvClientError
-        self._cache[params] = content
+        # TODO: Set cache here
         return content
 
 
