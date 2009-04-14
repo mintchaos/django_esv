@@ -14,7 +14,9 @@ class PassageInline(TemplateInline):
     An inline for retrieving passages from the ESV REST webservice.
     
     Takes any passage or passages and returns the ESV (x)html output for that 
-    passage. 
+    passage. ::
+    
+        {{ passage reference [arguments] }}
     
     Takes these arguments::
     

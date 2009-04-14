@@ -2,7 +2,6 @@
 from os.path import dirname, join, abspath
 from django.conf import settings
 template_dir = join(dirname(abspath(__file__)), 'templates')
-print template_dir
 settings.configure(
     TEMPLATE_DIRS=(template_dir,),
     TEMPLATE_LOADERS=('django.template.loaders.filesystem.load_template_source',),
